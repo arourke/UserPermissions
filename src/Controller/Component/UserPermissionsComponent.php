@@ -52,8 +52,6 @@ class UserPermissionsComponent extends Component {
 * @return string '0' if user / group doesn't have permission, 1 if has permission
 */
     public function allow ($rules) {
-    	$user_id = $this->session->read('Auth.User.id');
-
 		$actions 	= array();
 		$bool 		= '1';
 		$redirect 	= '';
@@ -61,6 +59,7 @@ class UserPermissionsComponent extends Component {
 		$controller = '';
 		$message 	= '';
 		$userType 	= '';
+		$user_id 	= $this->session->read('Auth.User.id');
 		$find 		= 0;
 
 		//setting default options
@@ -80,6 +79,9 @@ class UserPermissionsComponent extends Component {
 			        break;
 			    case "message":
 			        $message = $value;
+			        break;
+			    case "user_id":
+			        $user_id = $this->session->read($value);
 			        break;
 			}
 		}

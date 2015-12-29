@@ -91,6 +91,7 @@ Inside your action beforeFilter you can set rules for group of user that you wan
 
 ```
 $rules = array(
+	'user_id' => 'Auth.User.id',
 	'user_type' => $user_type,
 	'redirect' => '/projects/',
 	'message' => 'You do not have permission to access this page',
@@ -120,6 +121,7 @@ Now everytime that you load a page inside this controller the plugin check for t
 
 ##Settings
 There are some parameters that you can use into this plugin:
+* user_id
 * user_type
 * redirect
 * message
@@ -127,6 +129,15 @@ There are some parameters that you can use into this plugin:
 * controller
 * groups
 * views
+
+####user_id
+This optional parameter allows you to select what attribute will be retrieved from session variable for the user's ID. attribute should be provided in dot-notation:
+
+```
+'user_id' => 'Auth.User.id'
+```
+
+By default, `Auth.User.id` will be used.
 
 ####user_type
 Is the group name of the user (or the username if you check by username not by user group).
