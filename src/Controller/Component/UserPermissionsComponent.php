@@ -58,7 +58,7 @@ class UserPermissionsComponent extends Component {
 		$params 	= '';
 		$controller = '';
 		$message 	= '';
-		$userType 	= '';
+		$userType 	= 'guest'; 
 		$user_id 	= $this->session->read('Auth.User.id');
 		$find 		= 0;
 
@@ -86,38 +86,39 @@ class UserPermissionsComponent extends Component {
 			}
 		}
 
-		//push into array group actions
-		foreach($rules['groups']  as $key => $value){
-			if($key == $userType){
-				foreach($value as $v){
-					array_push($actions, $v);
-				}
-			}
-		}
-
-		if(!isset($user_id)){
-			$userType = 'guest';
-		}
-
+		//push into array group actions		
 		if(isset($rules['groups'])){
-			foreach($rules['groups'] as $key => $value){
-				if($key == $userType){
-					if(!in_array('*', $actions)){
-						if(!in_array($action, $actions)){
-							$find = 1;
-							if($redirect != ''){
-								if($message != ''){
-									$this->Flash->set($message);
-								}
-
-								header("Location: " . $redirect);
-								exit;
-							}
-							else{
-								$bool = '0';
+			if(is_array($userType)){
+				foreach($rules['groups'] as $permGroup => $permActions){
+					foreach($userType as $userKey => $userGroup){
+						if($permGroup == $userGroup){
+							foreach ($permActions as $groupKey => $groupValue){
+								array_push($actions, $groupValue);
 							}
 						}
 					}
+				}
+				$actions = array_unique($actions);
+				\Cake\Log\Log::write('debug', $actions);
+			} else {
+				foreach($rules['groups'] as $key => $value){
+					if($key == $userType){
+						foreach($value as $v){
+							array_push($actions, $v);
+						}
+					}
+				}
+			}
+			if((!in_array('*', $actions)) && (!in_array($action, $actions))){
+				$find = 1;
+				if($redirect != ''){
+					if($message != ''){
+						$this->Flash->set($message);
+					}
+					header("Location: " . $redirect);
+					exit;
+				} else {
+					$bool = '0';
 				}
 			}
 		}
@@ -130,18 +131,15 @@ class UserPermissionsComponent extends Component {
 							if($message != ''){
 								$this->Flash->set($message);
 							}
-							
 							header("Location: " . $redirect);
 							exit;
-						}
-						else{
+						} else {
 							$bool = '0';
 						}
 					}
 				}
 			}
 		}
-
 		return $bool;
     }
 }

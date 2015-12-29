@@ -140,7 +140,7 @@ This optional parameter allows you to select what attribute will be retrieved fr
 By default, `Auth.User.id` will be used.
 
 ####user_type
-Is the group name of the user (or the username if you check by username not by user group).
+Is the group name of the user (or the username if you check by username not by user group) or an array containing all of the user's group memberships.
 You need to pass this information to the plugin to compare users and permission that you give.
 Usually inside table users, every user have a group field to understand if is an admin, a normal user etc.
 You can pass the value user_type for example in this way:
