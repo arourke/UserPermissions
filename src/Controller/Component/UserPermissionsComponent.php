@@ -95,7 +95,7 @@ class UserPermissionsComponent extends Component {
 			}
 		}
 
-		if(!isset($userId)){
+		if(!isset($user_id)){
 			$userType = 'guest';
 		}
 
